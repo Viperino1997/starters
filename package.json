@@ -1,0 +1,11 @@
+{
+  "name": "starters",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Local monorepo of frontend starters sharing one design layer (Tailwind + shadcn/ui tokens).",
+  "scripts": {
+    "dev:landing": "pnpm --filter landing dev",
+    "dev:dashboard": "pnpm --filter dashboard dev",
+    "dev:app": "pnpm --filter app dev"
+  }
+}

@@ -1,0 +1,128 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ThemeToggle } from "@/components/ThemeToggle";
+
+const features = [
+  {
+    title: "Astro islands",
+    body: "Ship zero JS by default; hydrate only the interactive bits (like this theme toggle).",
+  },
+  {
+    title: "GSAP + ScrollTrigger",
+    body: "Scroll-driven reveals with a single animation library — no Framer Motion here.",
+  },
+  {
+    title: "Shared design tokens",
+    body: "The exact @starters/design palette used by the dashboard and app shells.",
+  },
+];
+---
+
+<Layout>
+  <header
+    class="sticky top-0 z-40 border-b bg-background/80 backdrop-blur"
+  >
+    <div class="mx-auto flex h-14 max-w-5xl items-center px-6">
+      <div class="flex items-center gap-2 font-semibold">
+        <span
+          class="flex size-7 items-center justify-center rounded-md bg-primary text-sm text-primary-foreground"
+        >
+          S
+        </span>
+        Starters
+      </div>
+      <nav class="ml-auto flex items-center gap-6 text-sm text-muted-foreground">
+        <a href="#features" class="transition-colors hover:text-foreground">
+          Features
+        </a>
+        <ThemeToggle client:load />
+      </nav>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-5xl px-6">
+    <section
+      data-hero
+      class="flex flex-col items-center gap-6 py-24 text-center sm:py-32"
+    >
+      <span
+        class="rounded-full border px-3 py-1 text-xs font-medium text-muted-foreground"
+      >
+        Astro landing starter
+      </span>
+      <h1
+        class="max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl"
+      >
+        Ship a landing that loads instantly and moves with intent
+      </h1>
+      <p class="max-w-xl text-lg text-muted-foreground text-pretty">
+        Astro + Tailwind v4 + shadcn islands + GSAP, on the shared design layer.
+        Bring your concept and build the signature moments on top.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="#features"
+          class="inline-flex h-10 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Get started
+        </a>
+        <a
+          href="#features"
+          class="inline-flex h-10 items-center justify-center rounded-md border px-6 text-sm font-medium transition-colors hover:bg-muted"
+        >
+          Learn more
+        </a>
+      </div>
+    </section>
+
+    <section id="features" class="grid gap-6 pb-24 sm:grid-cols-3">
+      {
+        features.map((f) => (
+          <div
+            data-reveal
+            class="flex flex-col gap-2 rounded-xl border bg-card p-6"
+          >
+            <h2 class="text-lg font-semibold">{f.title}</h2>
+            <p class="text-sm text-muted-foreground">{f.body}</p>
+          </div>
+        ))
+      }
+    </section>
+  </main>
+
+  <footer class="border-t">
+    <div
+      class="mx-auto flex max-w-5xl items-center justify-between px-6 py-8 text-sm text-muted-foreground"
+    >
+      <span>Starters · landing</span>
+      <span>Built with Astro + GSAP</span>
+    </div>
+  </footer>
+
+  <script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.from("[data-hero] > *", {
+        y: 24,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: "power2.out",
+      });
+
+      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+        gsap.from(el, {
+          y: 30,
+          opacity: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 85%" },
+        });
+      });
+    }
+  </script>
+</Layout>
