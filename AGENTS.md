@@ -19,28 +19,35 @@ starters/
     └── app/              Vite 8   + React 19 + Tailwind v4 + shadcn + Framer Motion
 ```
 
-## The single most important concept: the shared design layer
+## The single most important concept: the design tokens
 
-Tokens are split into **values** (shared) and **mapping** (per shell):
+Each shell is **self-contained** so it can be extracted with `degit` and run on its
+own. Tokens use a canonical-source + vendored-copy model:
 
-- `packages/design/src/theme.css` holds ONLY the brand token VALUES:
-  the `:root { ... }` and `.dark { ... }` blocks (colors, radius). Neutral shadcn
-  base on purpose — it is meant to be re-branded per project.
-- Each shell's entry CSS (`app/globals.css`, `src/index.css`, or
-  `src/styles/global.css`) keeps its own shadcn `@theme inline` mapping
-  (the `--color-*: var(--*)` boilerplate) and imports the shared values:
+- `packages/design/src/theme.css` is the **canonical source** for the brand token
+  VALUES (the `:root { ... }` and `.dark { ... }` blocks — colors, radius). Neutral
+  shadcn base on purpose; meant to be re-branded per project.
+- Each shell carries a **vendored copy** at `apps/<shell>/.../theme.css`
+  (`apps/dashboard/app/theme.css`, `apps/app/src/theme.css`,
+  `apps/landing/src/styles/theme.css`). The copies are AUTO-GENERATED — they carry a
+  banner; do not hand-edit them.
+- Each shell's entry CSS keeps its own shadcn `@theme inline` mapping (the
+  `--color-*: var(--*)` boilerplate) and imports the LOCAL vendored copy:
 
   ```css
   @import "tailwindcss";
   @import "tw-animate-css";
   @import "shadcn/tailwind.css";
-  @import "@starters/design/theme.css";   /* the shared VALUES */
+  @import "./theme.css";   /* the vendored token VALUES */
   ```
 
-**Rule:** change colors/radius in `packages/design/src/theme.css` → all three
-shells update. Do NOT copy token values into individual shells. Do NOT move the
-`@theme inline` mapping into the shared package (it is shadcn boilerplate that
-shadcn regenerates per app; keeping it per-shell avoids fighting the CLI).
+**Workflow:** edit `packages/design/src/theme.css` → run `pnpm sync:tokens`
+(`scripts/sync-tokens.mjs`) → it overwrites every shell's `theme.css`. Do NOT
+hand-edit the vendored copies (they get overwritten). Do NOT re-introduce a
+`@starters/design` workspace dependency in a shell — that breaks `degit`
+extraction. Do NOT move the `@theme inline` mapping into the source (it is shadcn
+boilerplate that shadcn regenerates per app; keeping it per-shell avoids fighting
+the CLI).
 
 ## Conventions
 
