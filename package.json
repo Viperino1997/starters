@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "description": "Local monorepo of frontend starters sharing one design layer (Tailwind + shadcn/ui tokens).",
+  "packageManager": "pnpm@11.8.0",
   "scripts": {
     "dev:landing": "pnpm --filter landing dev",
     "dev:dashboard": "pnpm --filter dashboard dev",
