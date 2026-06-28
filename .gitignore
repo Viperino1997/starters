@@ -33,3 +33,8 @@ pnpm-debug.log*
 coverage/
 .playwright-mcp/
 .impeccable/
+
+# Playwright
+playwright-report/
+test-results/
+/playwright/.cache/

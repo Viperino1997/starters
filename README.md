@@ -59,6 +59,17 @@ pnpm install
 pnpm dev:landing      # or dev:dashboard / dev:app
 ```
 
+## Test
+Each shell carries its own tests (vendored, like the tokens) so they survive
+`degit` extraction. Unit tests use Vitest + Testing Library; E2E uses Playwright.
+```bash
+pnpm --filter <shell> test      # unit (vitest)
+pnpm --filter <shell> e2e       # e2e (playwright) — first run:
+pnpm --filter <shell> exec playwright install chromium
+```
+Swap `<shell>` for `app`, `dashboard`, or `landing`. See `AGENTS.md` → Testing
+for the per-framework wiring.
+
 ## Conventions
 - Tailwind v4 across all shells (CSS-first, `@theme inline`).
 - shadcn/ui (base-ui flavor) — components live per shell in `components/ui/`.

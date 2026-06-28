@@ -42,3 +42,16 @@ jobs:
 
       - name: Build
         run: pnpm --filter ${{ matrix.app }} run build
+
+      - name: Test
+        run: pnpm --filter ${{ matrix.app }} run --if-present test
+
+      # E2E runs only for shells that ship a Playwright config, so the browser
+      # download is skipped for shells that don't have e2e yet.
+      - name: Install Playwright browser
+        if: hashFiles(format('apps/{0}/playwright.config.ts', matrix.app)) != ''
+        run: pnpm --filter ${{ matrix.app }} exec playwright install --with-deps chromium
+
+      - name: E2E
+        if: hashFiles(format('apps/{0}/playwright.config.ts', matrix.app)) != ''
+        run: pnpm --filter ${{ matrix.app }} run e2e

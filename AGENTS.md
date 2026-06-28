@@ -82,6 +82,37 @@ cd apps/<shell> && pnpm dlx shadcn@latest add <component> -y
 Then adapt it to the shared tokens if needed. The component is copied into the
 shell — you own it.
 
+## Testing
+
+Every shell ships its own test setup, **vendored per shell** like the tokens —
+nothing is hoisted to the workspace root, so `degit` extraction keeps the tests.
+
+- **Unit** — Vitest + Testing Library (jsdom). Tests live next to source as
+  `*.test.tsx`. Run `pnpm --filter <shell> test` (or `test:watch`,
+  `test:coverage`).
+- **E2E** — Playwright. Specs live in `apps/<shell>/e2e/*.spec.ts`. The
+  `webServer` builds and serves the production output (preview / `next start`),
+  so smoke tests exercise the same bundle users ship. Run
+  `pnpm --filter <shell> e2e`. First time: `pnpm --filter <shell> exec
+  playwright install chromium`.
+- **Per-shell wiring differs by framework:**
+  - `app` (Vite) — `vitest.config.ts` is standalone (separate from
+    `vite.config.ts` so the build stays clean); uses Vitest globals via
+    `tsconfig.app.json` `types`.
+  - `dashboard` (Next) — Next has no native Vite, so `vitest.config.ts` brings
+    its own `vite` + `@vitejs/plugin-react`. Test files import
+    `{ describe, it, expect, vi }` from `vitest` explicitly (no globals). Test
+    and e2e files are **excluded from `tsconfig.json`** so `next build` doesn't
+    type-check them.
+  - `landing` (Astro) — `vitest.config.ts` uses `getViteConfig` from
+    `astro/config` so islands resolve as in the build. Only **React islands**
+    are unit-testable; `.astro` pages are covered by E2E.
+- CI (`.github/workflows/ci.yml`) runs `test` for every shell (`--if-present`)
+  and runs E2E only for shells that have a `playwright.config.ts` (gated by
+  `hashFiles`), so the browser download is skipped where there's no e2e.
+- **Convention:** unit = `*.test.tsx`, e2e = `*.spec.ts` — kept on different
+  extensions/dirs so Vitest never picks up Playwright specs (and vice versa).
+
 ## CRITICAL gotchas (these are version-specific and WILL trip you up)
 
 1. **shadcn here is base-ui flavored.** Components use a `render` prop, NOT
@@ -99,6 +130,10 @@ shell — you own it.
    as a boolean map (e.g. `sharp: true`), not `onlyBuiltDependencies`.
 6. **`create-vite` / `create-astro` treat the target dir as RELATIVE to cwd** —
    passing an absolute path concatenates it onto cwd.
+7. **Vitest 4 is required for Vite 8.** Its peer range is
+   `vite ^6 || ^7 || ^8`; older Vitest majors won't resolve against the Vite 8
+   (rolldown) the shells run. `@testing-library/react` v16 also needs
+   `@testing-library/dom` v10 installed explicitly (it's a peer, not bundled).
 
 ## What NOT to do
 
