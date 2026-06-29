@@ -1,10 +1,19 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "@/components/ui/sonner";
-import { HomePage } from "@/pages/HomePage";
-import { SettingsPage } from "@/pages/SettingsPage";
+
+// Routes are code-split so heavy, page-local deps (e.g. the form stack —
+// react-hook-form + zod on SettingsPage) load on demand, not in the initial
+// chunk. Pages export named components, so map them to a default for lazy().
+const HomePage = lazy(() =>
+  import("@/pages/HomePage").then((m) => ({ default: m.HomePage })),
+);
+const SettingsPage = lazy(() =>
+  import("@/pages/SettingsPage").then((m) => ({ default: m.SettingsPage })),
+);
 
 function App() {
   const location = useLocation();
@@ -22,10 +31,12 @@ function App() {
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              <Routes location={location}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/settings" element={<SettingsPage />} />
-              </Routes>
+              <Suspense fallback={null}>
+                <Routes location={location}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/settings" element={<SettingsPage />} />
+                </Routes>
+              </Suspense>
             </motion.div>
           </AnimatePresence>
         </main>
