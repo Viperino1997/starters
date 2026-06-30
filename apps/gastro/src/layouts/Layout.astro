@@ -77,6 +77,21 @@ const restaurantSchema = {
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
 
+    <script>
+      // Vercel Analytics + custom events. Any element with data-evt fires a
+      // tracked event on click (data-src = where it was clicked). Lets the
+      // client see WhatsApp clicks and reservations on the Vercel dashboard.
+      import { inject, track } from "@vercel/analytics";
+      inject();
+      document.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement | null;
+        const el = target?.closest<HTMLElement>("[data-evt]");
+        if (el) {
+          track(el.dataset.evt ?? "click", { source: el.dataset.src ?? "unknown" });
+        }
+      });
+    </script>
+
     <script is:inline>
       // Run before first paint:
       // 1. No-flash dark mode.

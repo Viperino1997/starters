@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { track } from "@vercel/analytics";
 
 interface Props {
   whatsappNumber: string;
@@ -26,6 +27,7 @@ export function ReservationForm({ whatsappNumber, brandName, timeSlots, partySiz
       return;
     }
     setError("");
+    track("reservation_submit", { source: "form", party });
     const message =
       `¡Hola ${brandName}! Quería reservar una mesa.\n` +
       `• Nombre: ${name.trim()}\n` +
