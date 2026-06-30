@@ -1,0 +1,70 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { site } from "@/content/site";
+
+const waLink = `https://wa.me/${site.whatsapp.number}?text=${encodeURIComponent(
+  site.whatsapp.reservationMessage,
+)}`;
+---
+
+<Layout
+  title={`Carta · ${site.brand.name}`}
+  description={`La carta completa de ${site.brand.name}.`}
+  path="/carta"
+>
+  <main class="mx-auto max-w-2xl px-6 py-12 sm:py-16">
+    <a
+      href="/"
+      class="inline-flex items-center text-sm text-muted-foreground transition-colors hover:text-foreground"
+    >
+      ← Volver
+    </a>
+
+    <header class="mb-12 mt-6 text-center">
+      <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+        {site.brand.name}
+      </p>
+      <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">Carta</h1>
+    </header>
+
+    <div class="flex flex-col gap-12">
+      {
+        site.menu.map((cat) => (
+          <section>
+            <h2 class="mb-5 text-sm font-semibold uppercase tracking-wider text-accent">
+              {cat.title}
+            </h2>
+            <ul class="flex flex-col gap-4">
+              {cat.items.map((item) => (
+                <li class="flex items-baseline justify-between gap-4 border-b border-dashed pb-3">
+                  <div>
+                    <p class="font-medium">{item.name}</p>
+                    {item.description && (
+                      <p class="text-sm text-muted-foreground">{item.description}</p>
+                    )}
+                  </div>
+                  {item.price && (
+                    <span class="shrink-0 text-sm font-medium tabular-nums text-muted-foreground">
+                      {item.price}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+
+    <div class="mt-14 text-center">
+      <a
+        href={waLink}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+      >
+        Reservar por WhatsApp
+      </a>
+    </div>
+  </main>
+</Layout>

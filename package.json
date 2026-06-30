@@ -6,6 +6,8 @@
   "packageManager": "pnpm@11.8.0",
   "scripts": {
     "dev:landing": "pnpm --filter landing dev",
+    "dev:gastro": "pnpm --filter gastro dev",
+    "build:gastro": "pnpm --filter gastro build",
     "dev:dashboard": "pnpm --filter dashboard dev",
     "dev:app": "pnpm --filter app dev",
     "sync:tokens": "node scripts/sync-tokens.mjs"

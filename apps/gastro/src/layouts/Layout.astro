@@ -1,0 +1,96 @@
+---
+import "@/styles/global.css";
+import { site } from "@/content/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** path of this page for canonical + og:url, e.g. "/" or "/carta" */
+  path?: string;
+}
+
+const {
+  title = site.brand.name,
+  description = site.hero.subtitle,
+  path = "/",
+} = Astro.props;
+
+const canonical = site.seo.url + path;
+const ogImage = new URL(site.seo.ogImage, site.seo.url).href;
+
+// SEO / Google Business structured data
+const restaurantSchema = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  name: site.brand.name,
+  description: site.hero.subtitle,
+  servesCuisine: site.seo.cuisine,
+  priceRange: site.seo.priceRange,
+  url: site.seo.url,
+  telephone: "+" + site.whatsapp.number,
+  image: ogImage,
+  acceptsReservations: true,
+  menu: site.seo.url + "/carta",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.location.address,
+    addressLocality: site.location.city,
+    addressCountry: "AR",
+  },
+  ...(site.location.geo && {
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: site.location.geo.lat,
+      longitude: site.location.geo.lng,
+    },
+  }),
+  ...(site.seo.openingHoursSchema && { openingHours: site.seo.openingHoursSchema }),
+  sameAs: [site.social.instagram, site.social.facebook].filter(Boolean),
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#b91c1c" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="restaurant" />
+    <meta property="og:site_name" content={site.brand.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_AR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(restaurantSchema)} />
+
+    <script is:inline>
+      // Run before first paint:
+      // 1. No-flash dark mode.
+      const stored = localStorage.getItem("landing-theme");
+      const isDark =
+        stored === "dark" ||
+        (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.classList.toggle("dark", isDark);
+      // 2. Mark JS as available so scroll-reveal elements may start hidden.
+      //    Without JS (or if it fails), content stays visible by default.
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body class="min-h-dvh antialiased">
+    <slot />
+  </body>
+</html>

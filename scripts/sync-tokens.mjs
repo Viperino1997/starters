@@ -11,6 +11,8 @@ const targets = [
   "apps/dashboard/app/theme.css",
   "apps/app/src/theme.css",
   "apps/landing/src/styles/theme.css",
+  // NOTE: apps/gastro is intentionally NOT synced — it carries its own branded
+  // palette (Bodegón cálido). Re-brand per client in apps/gastro/src/styles/theme.css.
 ];
 
 const banner =

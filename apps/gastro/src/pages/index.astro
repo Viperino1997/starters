@@ -1,0 +1,265 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { site } from "@/content/site";
+import Icon from "@/components/Icon.astro";
+import { ReservationForm } from "@/components/ReservationForm";
+
+const waLink = `https://wa.me/${site.whatsapp.number}?text=${encodeURIComponent(
+  site.whatsapp.reservationMessage,
+)}`;
+---
+
+<Layout title={site.brand.name} description={site.hero.subtitle}>
+  <header class="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
+    <div class="mx-auto flex h-14 max-w-5xl items-center px-6">
+      <a href="#top" class="flex items-center gap-2 font-semibold">
+        <span
+          class="flex size-7 items-center justify-center rounded-md bg-primary text-sm text-primary-foreground"
+        >
+          {site.brand.mark}
+        </span>
+        {site.brand.name}
+      </a>
+      <nav class="ml-auto flex items-center gap-6 text-sm text-muted-foreground">
+        <a href="#carta" class="hidden transition-colors hover:text-foreground sm:inline">Carta</a>
+        <a href="#visitanos" class="hidden transition-colors hover:text-foreground sm:inline">Visitanos</a>
+        <a
+          href={waLink}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Reservar
+        </a>
+        <ThemeToggle client:load />
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="mx-auto max-w-5xl px-6">
+    <!-- Hero -->
+    <section data-hero class="relative flex flex-col items-center gap-6 py-24 text-center sm:py-32">
+      <div class="pointer-events-none absolute inset-x-0 -top-24 -z-10 mx-auto h-80 max-w-3xl rounded-full bg-primary/15 blur-3xl"></div>
+      <div class="pointer-events-none absolute right-1/4 -top-8 -z-10 size-48 rounded-full bg-accent/20 blur-3xl"></div>
+      <span class="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-accent">
+        {site.brand.badge}
+      </span>
+      <h1 class="max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-7xl">
+        {site.hero.title}
+      </h1>
+      <p class="max-w-xl text-lg text-muted-foreground text-pretty sm:text-xl">
+        {site.hero.subtitle}
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={waLink}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          <Icon name="message-circle" class="size-4" /> Reservar por WhatsApp
+        </a>
+        <a
+          href="#carta"
+          class="inline-flex h-11 items-center justify-center rounded-md border px-6 text-sm font-medium transition-colors hover:bg-muted"
+        >
+          Ver carta
+        </a>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section data-reveal class="mx-auto max-w-2xl py-16 text-center sm:py-20">
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Nuestra esencia</p>
+      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">{site.about.title}</h2>
+      <p class="mt-4 text-lg text-muted-foreground text-pretty">{site.about.body}</p>
+    </section>
+
+    <!-- Carta -->
+    <section id="carta" class="py-16 sm:py-20">
+      <div data-reveal class="mb-12 text-center">
+        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">La cocina</p>
+        <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Nuestra carta</h2>
+      </div>
+      <div class="grid gap-10 sm:grid-cols-2">
+        {
+          site.menu.map((cat) => (
+            <div data-reveal class="flex flex-col gap-4">
+              <h3 class="text-sm font-semibold uppercase tracking-wider text-accent">
+                {cat.title}
+              </h3>
+              <ul class="flex flex-col gap-4">
+                {cat.items.map((item) => (
+                  <li class="flex items-baseline justify-between gap-4 border-b border-dashed pb-3">
+                    <div>
+                      <p class="font-medium">{item.name}</p>
+                      {item.description && (
+                        <p class="text-sm text-muted-foreground">{item.description}</p>
+                      )}
+                    </div>
+                    {item.price && (
+                      <span class="shrink-0 text-sm font-medium tabular-nums text-muted-foreground">
+                        {item.price}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+      <div data-reveal class="mt-10 text-center">
+        <a
+          href="/carta"
+          class="inline-flex h-10 items-center justify-center rounded-md border px-5 text-sm font-medium transition-colors hover:bg-muted"
+        >
+          Ver carta completa
+        </a>
+      </div>
+    </section>
+
+    <!-- Reservá tu mesa -->
+    <section id="reservas" class="py-16 sm:py-20">
+      <div data-reveal class="mx-auto max-w-xl rounded-2xl border bg-card p-8 shadow-sm">
+        <div class="mb-6 text-center">
+          <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            Tu lugar te espera
+          </p>
+          <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Reservá tu mesa</h2>
+          <p class="mt-2 text-sm text-muted-foreground">
+            Te toma 20 segundos. Confirmamos por WhatsApp.
+          </p>
+        </div>
+        <ReservationForm
+          client:visible
+          whatsappNumber={site.whatsapp.number}
+          brandName={site.brand.name}
+          timeSlots={site.reservation.timeSlots}
+          partySizes={site.reservation.partySizes}
+        />
+      </div>
+    </section>
+
+    <!-- Horarios + Ubicación -->
+    <section id="visitanos" class="grid gap-6 py-16 sm:grid-cols-2">
+      <div data-reveal class="flex flex-col gap-4 rounded-xl border bg-card p-6">
+        <div class="flex items-center gap-2 text-primary">
+          <Icon name="clock" class="size-5" />
+          <h3 class="font-semibold text-card-foreground">Horarios</h3>
+        </div>
+        <ul class="flex flex-col gap-2">
+          {
+            site.hours.map((row) => (
+              <li class="flex items-center justify-between text-sm">
+                <span class="text-muted-foreground">{row.days}</span>
+                <span class="font-medium">{row.hours}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div data-reveal class="flex flex-col gap-4 rounded-xl border bg-card p-6">
+        <div class="flex items-center gap-2 text-primary">
+          <Icon name="map-pin" class="size-5" />
+          <h3 class="font-semibold text-card-foreground">Dónde estamos</h3>
+        </div>
+        <p class="text-sm text-muted-foreground">{site.location.address}</p>
+        <a
+          href={site.location.mapsLink}
+          target="_blank"
+          rel="noopener"
+          class="mt-auto inline-flex h-9 w-fit items-center justify-center rounded-md border px-4 text-sm font-medium transition-colors hover:bg-muted"
+        >
+          Cómo llegar
+        </a>
+      </div>
+    </section>
+
+    <!-- Galería -->
+    <section class="py-16 sm:py-20">
+      <div data-reveal class="mb-12 text-center">
+        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">El ambiente</p>
+        <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">El lugar</h2>
+      </div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {
+          site.gallery.map((img) => (
+            <img
+              data-reveal
+              src={img.src}
+              alt={img.alt}
+              loading="lazy"
+              class="aspect-square w-full rounded-xl border object-cover"
+            />
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t">
+    <div
+      class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-muted-foreground sm:flex-row"
+    >
+      <span>© {new Date().getFullYear()} {site.brand.name}</span>
+      <div class="flex items-center gap-4">
+        {
+          site.social.instagram && (
+            <a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram" class="transition-colors hover:text-foreground">
+              <Icon name="instagram" class="size-5" />
+            </a>
+          )
+        }
+        {
+          site.social.facebook && (
+            <a href={site.social.facebook} target="_blank" rel="noopener" aria-label="Facebook" class="transition-colors hover:text-foreground">
+              <Icon name="facebook" class="size-5" />
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a
+    href={waLink}
+    target="_blank"
+    rel="noopener"
+    aria-label="Reservar por WhatsApp"
+    class="fixed bottom-6 right-6 z-50 inline-flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105"
+  >
+    <Icon name="message-circle" class="size-6" />
+  </a>
+
+  <script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.fromTo(
+        "[data-hero] > *",
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, stagger: 0.1, ease: "power2.out" },
+      );
+
+      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: { trigger: el, start: "top 85%" },
+          },
+        );
+      });
+    }
+  </script>
+</Layout>
