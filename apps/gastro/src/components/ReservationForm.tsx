@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { track } from "@vercel/analytics";
 
 interface Props {
@@ -13,7 +13,21 @@ interface Props {
  * wa.me chat with a structured prefilled message. The venue owns the funnel.
  */
 export function ReservationForm({ whatsappNumber, brandName, timeSlots, partySizes }: Props) {
-  const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD, local
+  // Next 14 days as tappable chips — no typing, no date format to guess.
+  const days = useMemo(() => {
+    const base = new Date();
+    return Array.from({ length: 14 }, (_, i) => {
+      const d = new Date(base);
+      d.setDate(base.getDate() + i);
+      const weekday = d.toLocaleDateString("es-AR", { weekday: "short" }).replace(".", "");
+      return {
+        iso: d.toLocaleDateString("en-CA"),
+        label: i === 0 ? "Hoy" : i === 1 ? "Mañana" : weekday,
+        dayNum: d.getDate(),
+      };
+    });
+  }, []);
+
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -28,10 +42,15 @@ export function ReservationForm({ whatsappNumber, brandName, timeSlots, partySiz
     }
     setError("");
     track("reservation_submit", { source: "form", party });
+    const readableDate = new Date(`${date}T00:00:00`).toLocaleDateString("es-AR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
     const message =
       `¡Hola ${brandName}! Quería reservar una mesa.\n` +
       `• Nombre: ${name.trim()}\n` +
-      `• Fecha: ${date}\n` +
+      `• Fecha: ${readableDate}\n` +
       `• Hora: ${time}\n` +
       `• Personas: ${party}`;
     window.open(
@@ -62,20 +81,32 @@ export function ReservationForm({ whatsappNumber, brandName, timeSlots, partySiz
         />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div>
-          <label htmlFor="res-date" className={labelClass}>
-            Fecha
-          </label>
-          <input
-            id="res-date"
-            type="date"
-            value={date}
-            min={today}
-            onChange={(e) => setDate(e.target.value)}
-            className={fieldClass}
-          />
+      <div>
+        <label className={labelClass}>Fecha</label>
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {days.map((d) => {
+            const selected = date === d.iso;
+            return (
+              <button
+                key={d.iso}
+                type="button"
+                onClick={() => setDate(d.iso)}
+                aria-pressed={selected}
+                className={`flex h-16 w-14 shrink-0 flex-col items-center justify-center gap-0.5 rounded-md border text-sm transition-colors ${
+                  selected
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "hover:bg-muted"
+                }`}
+              >
+                <span className="text-[11px] capitalize">{d.label}</span>
+                <span className="text-lg font-semibold tabular-nums">{d.dayNum}</span>
+              </button>
+            );
+          })}
         </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="res-time" className={labelClass}>
             Hora
