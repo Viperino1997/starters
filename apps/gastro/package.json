@@ -14,7 +14,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "e2e": "playwright test",
-    "qr": "node scripts/gen-qr.mjs"
+    "qr": "node scripts/gen-qr.mjs",
+    "demo": "node scripts/apply-demo.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.0",

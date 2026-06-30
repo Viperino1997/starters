@@ -1,0 +1,76 @@
+/*
+ * Gastro brand palette — "Bodegón cálido".
+ * Self-contained brand baseline for the gastro template (NOT synced from the
+ * neutral monorepo source). Re-brand per client by overriding the values below.
+ *
+ * Palette: appetizing red + warm gold on cream, deep maroon text.
+ */
+
+:root {
+  --background: #fdf6ec; /* cream */
+  --foreground: #450a0a; /* deep maroon */
+  --card: #fffdf9;
+  --card-foreground: #450a0a;
+  --popover: #fffdf9;
+  --popover-foreground: #450a0a;
+  --primary: #b91c1c; /* appetizing red */
+  --primary-foreground: #fff7ed;
+  --secondary: #f5e6d3; /* warm tan */
+  --secondary-foreground: #450a0a;
+  --muted: #f3e8d8;
+  --muted-foreground: #6b4226; /* readable warm brown */
+  --accent: #a16207; /* gold */
+  --accent-foreground: #fff7ed;
+  --destructive: #b91c1c;
+  --border: #ead9c2;
+  --input: #ead9c2;
+  --ring: #b91c1c;
+  --chart-1: #b91c1c;
+  --chart-2: #a16207;
+  --chart-3: #c2410c;
+  --chart-4: #d97706;
+  --chart-5: #7c2d12;
+  --radius: 0.625rem;
+  --sidebar: #fffdf9;
+  --sidebar-foreground: #450a0a;
+  --sidebar-primary: #b91c1c;
+  --sidebar-primary-foreground: #fff7ed;
+  --sidebar-accent: #f5e6d3;
+  --sidebar-accent-foreground: #450a0a;
+  --sidebar-border: #ead9c2;
+  --sidebar-ring: #b91c1c;
+}
+
+.dark {
+  --background: #1a1110; /* deep warm near-black */
+  --foreground: #f5e9dc; /* warm cream */
+  --card: #241715;
+  --card-foreground: #f5e9dc;
+  --popover: #241715;
+  --popover-foreground: #f5e9dc;
+  --primary: #ef4444; /* brighter red on dark */
+  --primary-foreground: #1a1110;
+  --secondary: #3a2420;
+  --secondary-foreground: #f5e9dc;
+  --muted: #3a2420;
+  --muted-foreground: #c9a88c; /* warm tan */
+  --accent: #d4a24e; /* amber/gold */
+  --accent-foreground: #1a1110;
+  --destructive: #ef4444;
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #ef4444;
+  --chart-1: #ef4444;
+  --chart-2: #d4a24e;
+  --chart-3: #fb923c;
+  --chart-4: #f59e0b;
+  --chart-5: #c2410c;
+  --sidebar: #241715;
+  --sidebar-foreground: #f5e9dc;
+  --sidebar-primary: #ef4444;
+  --sidebar-primary-foreground: #1a1110;
+  --sidebar-accent: #3a2420;
+  --sidebar-accent-foreground: #f5e9dc;
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: #ef4444;
+}

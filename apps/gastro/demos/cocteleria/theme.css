@@ -1,0 +1,74 @@
+/*
+ * Demo preset — "Oscuro elegante" (coctelería / wine bar).
+ * Dark by default: near-black surfaces, gold accent, bone text.
+ */
+
+:root {
+  --background: #0c0a09;
+  --foreground: #e7e5e4;
+  --card: #1c1917;
+  --card-foreground: #e7e5e4;
+  --popover: #1c1917;
+  --popover-foreground: #e7e5e4;
+  --primary: #d4a24e; /* gold */
+  --primary-foreground: #1c1917;
+  --secondary: #292524;
+  --secondary-foreground: #e7e5e4;
+  --muted: #292524;
+  --muted-foreground: #a8a29e;
+  --accent: #d4a24e;
+  --accent-foreground: #1c1917;
+  --destructive: #ef4444;
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #d4a24e;
+  --chart-1: #d4a24e;
+  --chart-2: #b08968;
+  --chart-3: #a8a29e;
+  --chart-4: #e7e5e4;
+  --chart-5: #78716c;
+  --radius: 0.5rem;
+  --sidebar: #1c1917;
+  --sidebar-foreground: #e7e5e4;
+  --sidebar-primary: #d4a24e;
+  --sidebar-primary-foreground: #1c1917;
+  --sidebar-accent: #292524;
+  --sidebar-accent-foreground: #e7e5e4;
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: #d4a24e;
+}
+
+/* Already dark by default — keep .dark identical for the toggle. */
+.dark {
+  --background: #0c0a09;
+  --foreground: #e7e5e4;
+  --card: #1c1917;
+  --card-foreground: #e7e5e4;
+  --popover: #1c1917;
+  --popover-foreground: #e7e5e4;
+  --primary: #d4a24e;
+  --primary-foreground: #1c1917;
+  --secondary: #292524;
+  --secondary-foreground: #e7e5e4;
+  --muted: #292524;
+  --muted-foreground: #a8a29e;
+  --accent: #d4a24e;
+  --accent-foreground: #1c1917;
+  --destructive: #ef4444;
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: #d4a24e;
+  --chart-1: #d4a24e;
+  --chart-2: #b08968;
+  --chart-3: #a8a29e;
+  --chart-4: #e7e5e4;
+  --chart-5: #78716c;
+  --sidebar: #1c1917;
+  --sidebar-foreground: #e7e5e4;
+  --sidebar-primary: #d4a24e;
+  --sidebar-primary-foreground: #1c1917;
+  --sidebar-accent: #292524;
+  --sidebar-accent-foreground: #e7e5e4;
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: #d4a24e;
+}
